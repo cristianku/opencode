@@ -42,6 +42,8 @@ import {
 } from "../tools/tool-renderer"
 import { SessionRetry } from "../components/session-retry"
 import { SessionError } from "../components/session-error"
+import { adminInboxMessage } from "../timeline/admin-inbox"
+import { AdminInboxNotice } from "../timeline/admin-inbox-notice"
 import type { TimelineDetail } from "../timeline/detail"
 import { scriptOutputLayout } from "../timeline/script-output"
 import { TimelineRow, type PartRef } from "../timeline/timeline-row"
@@ -839,6 +841,7 @@ export function createNextTimelineRowRenderer(input: {
   function Notice(props: { messageID: string; grouped?: boolean }) {
     const inset = () => (props.grouped ? "" : padding())
     const message = createMemo(() => input.projection.messageByID().get(props.messageID))
+    const inbox = createMemo(() => adminInboxMessage(message()))
 
     const compaction = createMemo(() => {
       const value = message()
@@ -920,7 +923,7 @@ export function createNextTimelineRowRenderer(input: {
     const content = createMemo(() => {
       const value = message()
 
-      return value && !goal() ? notice(value) : undefined
+      return value && !goal() && !inbox() ? notice(value) : undefined
     })
 
     const childID = createMemo(() => {
@@ -977,6 +980,13 @@ export function createNextTimelineRowRenderer(input: {
 
     return (
       <>
+        <Show when={inbox()}>
+          {(entry) => (
+            <div data-slot="session-timeline-notice" class={`w-full py-2 ${inset()}`}>
+              <AdminInboxNotice message={entry()} />
+            </div>
+          )}
+        </Show>
         <Show when={goal()}>
           {(objective) => (
             <div data-slot="session-turn-message-container" class={`w-full ${inset()}`}>

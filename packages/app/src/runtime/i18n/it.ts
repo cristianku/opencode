@@ -1214,6 +1214,7 @@ export const dict = {
   "sidebar.inbox.empty": "Le sessioni su cui lavori appariranno qui",
   "sidebar.inbox.section.needsAttention": "Richiedono attenzione",
   "sidebar.inbox.showMore": "Mostra altro",
+  "sidebar.adminInbox": "Inbox Admin",
   "sidebar.inbox.showLess": "Mostra meno",
   "sidebar.inbox.announce.approval": "{{title}} richiede approvazione.",
   "sidebar.inbox.announce.input": "{{title}} ha una domanda.",

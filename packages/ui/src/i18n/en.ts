@@ -400,6 +400,8 @@ const source = {
   "ui.sessionTimeline.notice.finished": "{{actor}} finished",
   "ui.sessionTimeline.notice.instructionsUpdated": "Instructions updated",
   "ui.sessionTimeline.notice.restart": "Continuing after restart",
+  "ui.adminInbox.request": "Admin request",
+  "ui.adminInbox.response": "Admin reply",
   "ui.message.queued": "Queued",
   "ui.message.attachment.alt": "attachment",
 

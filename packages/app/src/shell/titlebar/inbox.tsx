@@ -14,6 +14,8 @@ import {
   type JSX,
 } from "solid-js"
 import { createStore } from "solid-js/store"
+import { isAdminInboxSession } from "@opencode/session-ui/timeline/admin-inbox"
+import { Badge } from "@opencode/ui/badge"
 import { Button } from "@opencode/ui/button"
 import { ActivityRing } from "@opencode/ui/activity-ring"
 import { useDialog, useDialogLayer } from "@opencode/ui/context/dialog"
@@ -284,6 +286,7 @@ export function SidebarInbox() {
               project={entry().ctx.projects.forSession(entry().session)}
               directory={entry().session.location.directory}
               title={entry().session.title}
+              adminInbox={isAdminInboxSession(entry().session)}
               status={entry().status}
               server={servers.tag(entry().conn)}
               since={entry().since}
@@ -850,6 +853,7 @@ export function InboxSessionCard(props: {
   project?: LocalProject
   directory: string
   title?: string
+  adminInbox?: boolean
   status: InboxStatus
   server?: string
   since: number | undefined
@@ -923,6 +927,11 @@ export function InboxSessionCard(props: {
           >
             {sessionTabTitle(props.title, language.t("session.tab.session"))}
           </span>
+          <Show when={props.adminInbox}>
+            <Badge variant="accent" class="shrink-0 whitespace-nowrap">
+              {language.t("sidebar.adminInbox")}
+            </Badge>
+          </Show>
           <Show when={props.pinned}>
             <Icon name="pin" class="shrink-0 text-v2-icon-icon-muted" />
             <span class="sr-only">{language.t("sidebar.recent.pinned")}</span>

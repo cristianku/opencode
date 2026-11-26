@@ -2421,6 +2421,26 @@ test("opening a session from the inbox keeps the list's scroll position and rows
   expect(await list.evaluate((element) => element.scrollTop)).toBe(offset)
 })
 
+test("marks the admin inbox in the sidebar before opening it", async ({ page }) => {
+  await mockWorkspace(page, {
+    name: "Demo",
+    sessions: [
+      { id: "ses_admin_inbox", title: "Inbox OpenCode — cluster-admin" },
+      { id: "ses_admin_inbox_notes", title: "Inbox OpenCode — cluster-admin (notes)" },
+    ],
+    seed: { settings: { appearance: { tabLayout: "inbox" } }, tabs: [] },
+  })
+  await page.goto("/")
+
+  const sidebar = page.locator('[data-slot="sidebar-inbox"]')
+  const inbox = sidebar.getByRole("button", { name: /Inbox OpenCode — cluster-admin Admin Inbox/ })
+  const notes = sidebar.getByRole("button", { name: /Inbox OpenCode — cluster-admin \(notes\)/ })
+  await expect(inbox.getByText("Admin Inbox", { exact: true })).toBeVisible()
+  await expect(notes).toBeVisible()
+  await expect(notes.getByText("Admin Inbox", { exact: true })).toHaveCount(0)
+  await expectPath(page, "/")
+})
+
 test("renaming an inbox card updates the same session on Home", async ({ page }) => {
   await mockWorkspace(page, {
     name: "RenameInbox",

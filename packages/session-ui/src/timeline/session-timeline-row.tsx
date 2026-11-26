@@ -59,6 +59,8 @@ import {
 import { GenericTool } from "../components/basic-tool"
 import { SessionRetry } from "../components/session-retry"
 import { SessionError } from "../components/session-error"
+import { adminInboxMessage } from "./admin-inbox"
+import { AdminInboxNotice } from "./admin-inbox-notice"
 import type { TimelineDetail } from "./detail"
 import { scriptFileFact, type FileFact } from "./facts"
 import { scriptOutputLayout } from "./script-output"
@@ -829,6 +831,7 @@ export function createSessionTimelineRowRenderer(input: {
   function Notice(props: { messageID: string; grouped?: boolean }) {
     const inset = () => (props.grouped ? "" : padding())
     const message = createMemo(() => input.projection.messageByID().get(props.messageID))
+    const inbox = createMemo(() => adminInboxMessage(message()))
 
     const compaction = createMemo(() => {
       const value = message()
@@ -893,7 +896,7 @@ export function createSessionTimelineRowRenderer(input: {
     const content = createMemo(() => {
       const value = message()
 
-      return value ? notice(value) : undefined
+      return value && !inbox() ? notice(value) : undefined
     })
 
     const childID = createMemo(() => {
@@ -950,6 +953,13 @@ export function createSessionTimelineRowRenderer(input: {
 
     return (
       <>
+        <Show when={inbox()}>
+          {(entry) => (
+            <div data-slot="session-timeline-notice" class={`w-full py-2 ${inset()}`}>
+              <AdminInboxNotice message={entry()} />
+            </div>
+          )}
+        </Show>
         <Show when={compaction()}>
           {(message) => (
             <div data-slot="session-turn-message-container" class={`w-full ${inset()}`}>

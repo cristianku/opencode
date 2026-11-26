@@ -261,6 +261,8 @@ export const dict = {
   "ui.sessionTimeline.notice.finished": "{{actor}} finito",
   "ui.sessionTimeline.notice.instructionsUpdated": "Istruzioni aggiornate",
   "ui.sessionTimeline.notice.restart": "Continuazione dopo il riavvio",
+  "ui.adminInbox.request": "Richiesta admin",
+  "ui.adminInbox.response": "Risposta admin",
   "ui.messagePart.context.updates": "Aggiornamenti",
   "ui.promptInput.cancelUpload": "Annulla caricamento",
   "ui.promptInput.uploading": "{{percent}}%",

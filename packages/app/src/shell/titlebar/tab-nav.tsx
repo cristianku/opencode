@@ -3,7 +3,9 @@ import { createStore } from "solid-js/store"
 import { Predicate } from "effect"
 import { makeEventListener } from "@solid-primitives/event-listener"
 import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { isAdminInboxSession } from "@opencode/session-ui/timeline/admin-inbox"
 import { ActivityRing } from "@opencode/ui/activity-ring"
+import { Badge } from "@opencode/ui/badge"
 import { IconButton } from "@opencode/ui/icon-button"
 import { Icon } from "@opencode/ui/icon"
 import { Menu } from "@opencode/ui/menu"
@@ -532,6 +534,11 @@ export function TabNavItem(
             <span data-slot="tab-avatar-unread-dot" aria-hidden="true" />
           </Show>
         </span>
+        <Show when={props.orientation === "vertical" && !editing() && isAdminInboxSession(props.session)}>
+          <Badge variant="accent" class="shrink-0 whitespace-nowrap">
+            {language.t("sidebar.adminInbox")}
+          </Badge>
+        </Show>
         <span
           ref={(el) => {
             titleEl = el

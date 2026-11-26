@@ -8,6 +8,7 @@
     "./actions": "./src/actions.ts",
     "./document": "./src/document.ts",
     "./message": "./src/message/current-message.tsx",
+    "./timeline/admin-inbox": "./src/timeline/admin-inbox.ts",
     "./timeline/projection": "./src/timeline/projection.ts",
     "./timeline/detail": "./src/timeline/detail.ts",
     "./timeline/row": "./src/timeline/session-timeline-row.tsx",

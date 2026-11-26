@@ -884,6 +884,7 @@ export const dict = {
   "sidebar.inbox.empty": "Sessions you work on will appear here",
   "sidebar.inbox.section.needsAttention": "Needs attention",
   "sidebar.inbox.showMore": "Show more",
+  "sidebar.adminInbox": "Admin Inbox",
   "sidebar.inbox.showLess": "Show less",
   "sidebar.inbox.announce.approval": "{{title}} needs approval.",
   "sidebar.inbox.announce.input": "{{title}} has a question.",

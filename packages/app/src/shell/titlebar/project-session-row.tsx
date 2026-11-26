@@ -1,7 +1,9 @@
 import { createMemo, createSignal, onCleanup, Show, untrack, type JSX } from "solid-js"
 import { useQueryClient } from "@tanstack/solid-query"
 import type { SessionInfo } from "@opencode/client/promise"
+import { isAdminInboxSession } from "@opencode/session-ui/timeline/admin-inbox"
 import { ActivityRing } from "@opencode/ui/activity-ring"
+import { Badge } from "@opencode/ui/badge"
 import { Button } from "@opencode/ui/button"
 import { useDialog, useDialogLayer } from "@opencode/ui/context/dialog"
 import { Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitleGroup } from "@opencode/ui/dialog"
@@ -162,6 +164,11 @@ export function ProjectSessionRow(props: {
         <span class="min-w-0 flex-1 truncate" dir="auto">
           {sessionLabel(props.session)}
         </span>
+        <Show when={isAdminInboxSession(props.session)}>
+          <Badge variant="accent" class="shrink-0 whitespace-nowrap">
+            {language.t("sidebar.adminInbox")}
+          </Badge>
+        </Show>
         <Show when={props.label}>
           {(label) => (
             <span class="max-w-[40%] shrink-0 truncate text-[11px] leading-[var(--line-height-compact)] text-v2-text-text-faint [font-weight:400]">

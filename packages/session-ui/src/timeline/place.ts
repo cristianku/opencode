@@ -1,5 +1,6 @@
 import type { SessionMessageAssistant, SessionMessageInfo } from "@opencode/client/promise"
 import { untrack } from "solid-js"
+import { isAdminInboxMessage } from "./admin-inbox"
 import { timelineNoticeRequired, type TimelineDetail, type TimelinePlacement } from "./detail"
 import { placeFactOf, scriptChangePaths, scriptFilePartID, type Fact, type PlaceFact } from "./facts"
 
@@ -244,6 +245,8 @@ export function placeNotice(
   detail: TimelineDetail,
   timeline: TimelineKind,
 ): TimelinePlacement {
+  if (isAdminInboxMessage(message)) return "separate"
+
   if (timeline === "next" && sessionEvent(message)) return "separate"
   const source = message.type === "synthetic" ? message.metadata?.source : undefined
 

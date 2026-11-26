@@ -46,6 +46,46 @@ const completed = {
 } satisfies SessionMessageAssistant
 
 test.describe("static projection", () => {
+  for (const newTimeline of [false, true]) {
+    test(`labels admin inbox messages in the ${newTimeline ? "new" : "current"} timeline`, async ({ page }) => {
+      const channel = "cluster-admin-inbox-v1"
+      await setupTimeline(page, {
+        locale: "it",
+        settings: { newTimeline, timelineDetail: { ...detailed, notices: { placement: "hidden" } } },
+        sessionMessages: [
+          {
+            ...user,
+            metadata: { channel, sender: "agent-demo", peer: "cluster-admin" },
+            text: "Messaggio normale",
+          },
+          {
+            id: "msg_admin_request",
+            type: "synthetic",
+            metadata: { channel, sender: "agent-demo", peer: "cluster-admin", project: "Demo Atlas" },
+            text: "Verifica la configurazione di prova.",
+            time: { created: 2 },
+          },
+          {
+            id: "msg_admin_reply",
+            type: "synthetic",
+            metadata: { channel, sender: "cluster-admin", peer: "agent-demo" },
+            text: "Verifica completata.",
+            time: { created: 3 },
+          },
+        ],
+      })
+
+      const notices = page.locator('[data-slot="session-timeline-notice"]')
+      await expect(notices).toHaveText([
+        /^Richiesta admin\s*· agent-demo\s*· Demo Atlas\s*Verifica la configurazione di prova\.$/,
+        /^Risposta admin\s*· cluster-admin\s*Verifica completata\.$/,
+      ])
+      await expect(page.getByText("Messaggio normale", { exact: true })).toBeVisible()
+      await expect(page.getByText("Richiesta admin", { exact: true })).toHaveCount(1)
+      await expect(page.getByText("Risposta admin", { exact: true })).toHaveCount(1)
+    })
+  }
+
   test("renders current protocol notices in CLI order", async ({ page }) => {
     const ownerWarnings: string[] = []
     page.on("console", (message) => {

@@ -1,5 +1,6 @@
 import type { SessionMessageInfo } from "@opencode/client/promise"
 import { shellResultFailed } from "../message/current-tool-state"
+import { isAdminInboxMessage } from "./admin-inbox"
 
 export const timelineCategories = ["shell", "edit", "thinking", "subagents", "notices", "tools", "commentary"] as const
 
@@ -105,6 +106,7 @@ export function timelineNoticeRequired(message: SessionMessageInfo) {
   const metadata = message.metadata
 
   return (
+    isAdminInboxMessage(message) ||
     metadata?.state === "error" ||
     (metadata?.source === "shell" && metadata.state === "completed" && shellResultFailed(metadata))
   )
